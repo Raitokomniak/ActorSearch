@@ -6,11 +6,6 @@ const API_HOST = '';
 
 const aws = require('aws-sdk');
 
-const s3 = new aws.S3({
-    API_KEY: process.env.API_KEY,
-    API_HOST: process.env.API_HOST
-  });
-
 
 var charList = [];
 
@@ -34,7 +29,7 @@ export default function ActorSearch(){
     
     const options = { method: 'GET', url: 'https://online-movie-database.p.rapidapi.com/auto-complete', 
         params: {q: title},
-        headers: { 'X-RapidAPI-Key': s3.API_KEY, 'X-RapidAPI-Host': s3.API_HOST}
+        headers: { 'X-RapidAPI-Key': API_KEY, 'X-RapidAPI-Host': API_HOST}
         };
 
     const reset = (event) => {
