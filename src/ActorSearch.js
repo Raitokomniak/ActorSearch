@@ -2,7 +2,7 @@ import {useRef, useEffect,useState, React} from "react";
 import axios from 'axios';
 
 let API_KEY;
-let API_HOST;
+let DATABASE_URL;
 
 const aws = require('aws-sdk');
 
@@ -11,7 +11,7 @@ var charList = [];
 export default function ActorSearch(){
     const s3 = new aws.S3({
         API_KEY: process.env.API_KEY,
-        API_HOST: process.env.API_HOST
+        DATABASE_URL: process.env.DATABASE_URL
       });
 
 
@@ -33,7 +33,7 @@ export default function ActorSearch(){
     
     const options = { method: 'GET', url: 'https://online-movie-database.p.rapidapi.com/auto-complete', 
         params: {q: title},
-        headers: { 'X-RapidAPI-Key': s3.API_KEY, 'X-RapidAPI-Host': s3.API_HOST}
+        headers: { 'X-RapidAPI-Key': s3.API_KEY, 'X-RapidAPI-Host': s3.DATABASE_URL}
         };
 
     const reset = (event) => {
