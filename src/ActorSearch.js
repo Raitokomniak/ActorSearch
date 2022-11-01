@@ -32,7 +32,7 @@ export default function ActorSearch(){
     
     const options = { method: 'GET', url: 'https://online-movie-database.p.rapidapi.com/auto-complete', 
         params: {q: title},
-        headers: { 'X-RapidAPI-Key': API_KEY, 'X-RapidAPI-Host': API_HOST}
+        headers: { 'X-RapidAPI-Key': s3.API_KEY, 'X-RapidAPI-Host': s3.API_HOST}
         };
 
     const reset = (event) => {
