@@ -1,18 +1,20 @@
 import {useRef, useEffect,useState, React} from "react";
 import axios from 'axios';
 
-let API_KEY;
-let API_HOST;
+const API_KEY = '';
+const API_HOST = '';
 
 const aws = require('aws-sdk');
+
+const s3 = new aws.S3({
+    API_KEY: process.env.API_KEY,
+    API_HOST: process.env.API_HOST
+  });
+
 
 var charList = [];
 
 export default function ActorSearch(){
-    let s3 = new aws.S3({
-        API_KEY: process.env.API_KEY,
-        API_HOST: process.env.API_HOST
-      });
 
     const [title, setTitle] = useState('');
     const [titleID, setTitleID] = useState('');
