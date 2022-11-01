@@ -24,6 +24,25 @@
   color: white;
 }
 
+.container {
+    margin-top: 50px;
+    
+}
+
+footer {
+    width: 100%;
+    align-self: bottom;
+}
+
+footer .container{
+    margin-top: 0;
+    
+}
+
+.searchButton {
+    width: 100%;
+}
+
 .App-link {
   color: #61dafb;
 }
