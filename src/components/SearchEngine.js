@@ -52,6 +52,16 @@ export default function SearchEngine({searchType}){
         catch (TypeError){}
     }
 
+    /* to be implemented. is it going to mess up when there's multiple characters with the same name?
+    /* maybe add some filters to charerror?
+
+    function compareFirstName(tempName, comparedTo){
+        var nameString = [];
+        nameString = comparedTo.split(' ');
+        if(tempName === nameString[0]) return true;
+        return false;
+    }*/
+
     // Forcefully compares the strings first, 
     function compareNames(tempName, comparedTo){
         if(tempName.toLowerCase() === comparedTo.toLowerCase()) return true;
@@ -187,7 +197,7 @@ export default function SearchEngine({searchType}){
         return <Loading/>
     }
     else if(charError){
-        if(searchType === "actor")      return <NotFoundError type="actor" title={title} backToSearch={backToSearch} list={charList} tempListNames={tempListNames} handleNameFix={handleNameFix} setName={setCharName} listDesc="Characters from"/>
+        if(searchType === "actor")      return <NotFoundError type="actor" title={title} backToSearch={backToSearch} list={charList} tempListNames={tempListNames} handleNameFix={handleNameFix} setName={setCharName} listDesc="Characters"/>
         if(searchType === "character")  return <NotFoundError type="character" title={title} backToSearch={backToSearch} list={charList} tempListNames={tempListNames} handleNameFix={handleNameFix} setName={setActorName} listDesc="Top billed"/>
     }
     else if(searchState < 1){
