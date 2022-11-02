@@ -29,6 +29,9 @@ export default function SearchEngine({searchType}){
     };
 
     const reset = (event) => {
+        setActorName('');
+        setCharName('');
+        setTitle('');
         setCharError(false);
         setReqComplete(false);
         setLoading(false);
