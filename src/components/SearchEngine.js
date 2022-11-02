@@ -29,9 +29,6 @@ export default function SearchEngine({searchType}){
     };
 
     const reset = (event) => {
-        setActorName('');
-        setCharName('');
-        setTitle('');
         setCharError(false);
         setReqComplete(false);
         setLoading(false);
@@ -39,6 +36,9 @@ export default function SearchEngine({searchType}){
 
     const backToSearch = (event) => {
         reset();
+        setActorName('');
+        setCharName('');
+        setTitle('');
         setSearchState(0);
     }
 
