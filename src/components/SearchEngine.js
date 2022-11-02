@@ -27,7 +27,7 @@ export default function SearchEngine({searchType}){
     const [titleError, setTitleError] = useState(false);
 
     const options = { method: 'GET',
-        headers: { 'X-RapidAPI-Key': process.env.REACT_APP_API_KEY, 'X-RapidAPI-Host': process.env.REACT_APP_DATABASE_URL}
+        headers: { 'X-RapidAPI-Key': process.env.REACT_APP_API_KEY, 'X-RapidAPI-Host': process.env.REACT_APP_HOST_URL}  //process.env.REACT_APP_API_KEY, process.env.REACT_APP_HOST_URL
     };
 
     const reset = (event) => {
@@ -98,6 +98,7 @@ export default function SearchEngine({searchType}){
         options.params = {q: title};
         console.log("Looking for title...");
         axios.request(options).then(function (response) {
+            console.log(response.data);
             if (response.data.d[0] === undefined){
                 setTitleError(true);
                 setSearchState(0);
@@ -143,44 +144,60 @@ export default function SearchEngine({searchType}){
         options.params = {tconst: titleID, id: paramString}
 
         axios.request(options).then(function (response) {
+          //  console.log(response.data); 
             console.log("Looking for characters...");
             charList =  Object.entries(response.data)
             
             // Iterate to find full match between actor names or character names
             for(var i = 0; i < charList.length; i++){
-                setCharNameF(charList[i][1].charname[0].characters[0]);
-                var tempCharName = charList[i][1].charname[0].characters[0];
-                var tempActorName = charList[i][1].name.name;
+             //   console.log(charList[i][1]);
+             //   console.log(charList[i][1].charname[0]);
+                if(charList[i][1].charname.characters === undefined)  {
+                  // setSearchState(0);
+                  //  setLoading(false);
+                    continue;
+                }
+                try{
+                    setCharNameF(charList[i][1].charname[0].characters[0]);
+                    var tempCharName = charList[i][1].charname[0].characters[0];
+                    var tempActorName = charList[i][1].name.name;
 
-                if(searchType === "actor"){
-                    if(compareNames(charName, tempCharName)) { 
-                    completeReq(tempActorName, i);
-                    break;
-                }}
-                if(searchType === "character"){}
-                if(compareNames(actorName, tempActorName)) { 
-                    completeReq(tempActorName, i);
-                    break;
+                    if(searchType === "actor"){
+                        if(compareNames(charName, tempCharName)) { 
+                        completeReq(tempActorName, i);
+                        break;
+                    }}
+                    if(searchType === "character"){
+                        if(compareNames(actorName, tempActorName)) { 
+                            completeReq(tempActorName, i);
+                            break;
+                        }}}
+                catch(TypeError){
+                    continue;
                 }
             }
 
             // Iterate again for partial matches if there was no full match
             if(!reqComplete) {
                 for(var i = 0; i < charList.length; i++){
-                    setCharNameF(charList[i][1].charname[0].characters[0]);
-                    var tempCharName = charList[i][1].charname[0].characters[0].toLowerCase();
-                    var tempActorName = charList[i][1].name.name;
+                    try{
+                        setCharNameF(charList[i][1].charname[0].characters[0]);
+                        var tempCharName = charList[i][1].charname[0].characters[0].toLowerCase();
+                        var tempActorName = charList[i][1].name.name;
 
-                    if(searchType === "actor"){
-                        if(compareNameInclusion(charName, tempCharName)){
-                        completeReq(tempActorName, i);
-                        break;
-                    }}
-                    if(searchType === "character"){if(
-                        compareNameInclusion(actorName, tempActorName)){
-                        completeReq(tempActorName, i);
-                        break;
-                    }}
+                        if(searchType === "actor"){
+                            if(compareNameInclusion(charName, tempCharName)){
+                            completeReq(tempActorName, i);
+                            break;
+                        }}
+                        if(searchType === "character"){if(
+                            compareNameInclusion(actorName, tempActorName)){
+                            completeReq(tempActorName, i);
+                            break;
+                        }}}
+                    catch (TypeError){
+                        continue;
+                    }
                 }
             }
             if(!reqComplete) {
