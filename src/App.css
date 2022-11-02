@@ -36,11 +36,39 @@ footer {
 
 footer .container{
     margin-top: 0;
-    
+    font-size: 15px;
+}
+
+.formDiv {
+    width: "100";
+}
+
+.charTitle{
+    font-size: 25px;
+}
+.instruction {
+    font-size: 20px;
 }
 
 .searchButton {
     width: 100%;
+    height: 90px;
+    font-size: 30px;
+}
+
+.charButton {
+    width: 100%;
+    font-size: 30px;
+    background-color: #213e79;
+}
+
+.backButton {
+    width: 100px;
+    background-color: crimson;
+}
+
+.backButton:hover {
+    background-color: crimson;
 }
 
 .App-link {
