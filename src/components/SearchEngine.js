@@ -4,6 +4,7 @@ import Loading from "./Loading";
 import NotFoundError from "./CharError";
 import Form from "./Form";
 import Result from "./Result";
+import TitleError from "./TitleError";
 
 var tempListNames = [];
 var charList = [];
@@ -23,12 +24,14 @@ export default function SearchEngine({searchType}){
     const [actorIMDB, setActorIMDB] = useState('');
     const [actorImgURL, setActorImgURL] = useState('');
     const [charIMDB, setCharIMDB] = useState('');
+    const [titleError, setTitleError] = useState(false);
 
     const options = { method: 'GET',
         headers: { 'X-RapidAPI-Key': process.env.REACT_APP_API_KEY, 'X-RapidAPI-Host': process.env.REACT_APP_DATABASE_URL}
     };
 
     const reset = (event) => {
+        setTitleError(false);
         setCharError(false);
         setReqComplete(false);
         setLoading(false);
@@ -95,6 +98,12 @@ export default function SearchEngine({searchType}){
         options.params = {q: title};
         console.log("Looking for title...");
         axios.request(options).then(function (response) {
+            if (response.data.d[0] === undefined){
+                setTitleError(true);
+                setSearchState(0);
+                setLoading(false);
+                return;
+            }
             setTitle(response.data.d[0].l);
             setTitleID(response.data.d[0].id);
             setSearchState(2);
@@ -199,6 +208,9 @@ export default function SearchEngine({searchType}){
     else if(charError){
         if(searchType === "actor")      return <NotFoundError type="actor" title={title} backToSearch={backToSearch} list={charList} tempListNames={tempListNames} handleNameFix={handleNameFix} setName={setCharName} listDesc="Characters"/>
         if(searchType === "character")  return <NotFoundError type="character" title={title} backToSearch={backToSearch} list={charList} tempListNames={tempListNames} handleNameFix={handleNameFix} setName={setActorName} listDesc="Top billed"/>
+    }
+    else if(titleError){
+        return <TitleError backToSearch={backToSearch}/>
     }
     else if(searchState < 1){
         if(searchType === "actor")      return <Form topPlaceHolder="Enter Character Name" instruction="Find the actor's name by referencing their character" formtitle1="Hey it's..." formtitle2="From..." buttonContent="Right?" nameValue={charName} setName={setCharName} title={title} setTitle={setTitle} setCharError={setCharError} setLoading={setLoading} setSearchState={setSearchState}/>

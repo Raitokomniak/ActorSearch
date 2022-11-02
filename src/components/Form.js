@@ -17,9 +17,9 @@ export default function Form({topPlaceHolder, nameValue, setName, title, setTitl
             <div className="formDiv">
                 <form onSubmit={handleSubmit}>
                     <h1>{formtitle1}</h1>
-                    <p><input className="form-control form-control-lg" type="text" placeholder={topPlaceHolder} id="char" value={nameValue} onChange={(e) => setName(e.target.value)}></input></p>
+                    <p><input className="form-control form-control-lg" type="text" placeholder={topPlaceHolder} id="char" value={nameValue} onChange={(e) => setName(e.target.value)} required></input></p>
                     <h1>{formtitle2}</h1>
-                    <p><input className="form-control form-control-lg" type="text" placeholder="Enter Show/Movie Name" id="title" value={title} onChange={(e) => setTitle(e.target.value)}></input></p>
+                    <p><input className="form-control form-control-lg" type="text" placeholder="Enter Show/Movie Name" id="title" value={title} onChange={(e) => setTitle(e.target.value)} required></input></p>
                     <p><button type="submit" className="btn btn-primary searchButton">{buttonContent}</button></p>
                 </form>
             </div>
