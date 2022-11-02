@@ -1,4 +1,4 @@
-import {useState, React, useRef, useEffect} from "react";
+import {useState, React} from "react";
 import axios from 'axios';
 import Loading from "./Loading";
 import NotFoundError from "./CharError";
