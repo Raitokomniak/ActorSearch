@@ -179,8 +179,8 @@ export default function SearchEngine({searchType}){
         return <Loading/>
     }
     else if(charError){
-        if(searchType === "actor")      return <NotFoundError title={title} backToSearch={backToSearch} list={charList} tempListNames={tempListNames} handleNameFix={handleNameFix} setName={setCharName} listDesc="Characters from"/>
-        if(searchType === "character")  return <NotFoundError title={title} backToSearch={backToSearch} list={charList} tempListNames={tempListNames} handleNameFix={handleNameFix} setName={setActorName} listDesc="Top billed"/>
+        if(searchType === "actor")      return <NotFoundError type="actor" title={title} backToSearch={backToSearch} list={charList} tempListNames={tempListNames} handleNameFix={handleNameFix} setName={setCharName} listDesc="Characters from"/>
+        if(searchType === "character")  return <NotFoundError type="character" title={title} backToSearch={backToSearch} list={charList} tempListNames={tempListNames} handleNameFix={handleNameFix} setName={setActorName} listDesc="Top billed"/>
     }
     else if(searchState < 1){
         if(searchType === "actor")      return <Form topPlaceHolder="Enter Character Name" instruction="Find the actor's name by referencing their character" formtitle1="Hey it's..." formtitle2="From..." buttonContent="Right?" nameValue={charName} setName={setCharName} title={title} setTitle={setTitle} setCharError={setCharError} setLoading={setLoading} setSearchState={setSearchState}/>

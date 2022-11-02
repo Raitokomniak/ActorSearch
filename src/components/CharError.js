@@ -1,16 +1,16 @@
 import {useRef} from 'react';
 
-export default function NotFoundError({title, backToSearch, list, tempListNames, handleNameFix, setName, listDesc}){
+export default function NotFoundError({type, title, backToSearch, list, tempListNames, handleNameFix, setName, listDesc}){
     var charRefs = useRef([]);
     let elements = [];
 
     //create buttons for possible matches
     const createElements = () => {
-        console.log("createelements");
-    
         for(var i = 0; i < list.length; i++){
             if(list[i] === null) return;
-            var tempName = list[i][1].name.name;
+            var tempName = '';
+            if(type==="actor") tempName = list[i][1].charname[0].characters[0];
+            if(type==="character") tempName = list[i][1].name.name;
             tempListNames[i] = tempName;
         }
             
