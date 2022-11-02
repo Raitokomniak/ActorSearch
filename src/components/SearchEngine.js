@@ -52,7 +52,6 @@ export default function SearchEngine({searchType}){
 
     //forcefully compares the strings first, if not found, then check if contained in the other string
     function compareNames(tempName, comparedTo){
-        console.log(comparedTo);
         if(tempName.toLowerCase() === comparedTo.toLowerCase()) return true;
         return false;
     }
@@ -96,10 +95,8 @@ export default function SearchEngine({searchType}){
             options.params = {tconst: titleID};
 
             axios.request(options).then(function (response) {
-               // console.log(response.data);
                 console.log("Looking for top billed...");
                 
-
                 for(var i = 0; i < response.data.length; i++){
                     var tempID = '';
                     for(var j = 6; j < 15; j++) tempID += response.data[i][j];
@@ -122,7 +119,6 @@ export default function SearchEngine({searchType}){
         options.params = {tconst: titleID, id: paramString}
 
         axios.request(options).then(function (response) {
-            console.log(response.data);
             console.log("Looking for characters...");
             charList =  Object.entries(response.data)
             
@@ -130,8 +126,6 @@ export default function SearchEngine({searchType}){
                 setCharNameF(charList[i][1].charname[0].characters[0]);
                 var tempCharName = charList[i][1].charname[0].characters[0];
                 var tempActorName = charList[i][1].name.name;
-
-                console.log(tempCharName + ' ' + tempActorName);
 
                 if(searchType === "actor"){
                     if(compareNames(charName, tempCharName)) { 
@@ -148,7 +142,6 @@ export default function SearchEngine({searchType}){
             if(!reqComplete) {
                 for(var i = 0; i < charList.length; i++){
                     setCharNameF(charList[i][1].charname[0].characters[0]);
-                    console.log(charList[i][1].charname[0].characters[0] + ' ' + charList[i][1].name.name);
                     var tempCharName = charList[i][1].charname[0].characters[0].toLowerCase();
                     var tempActorName = charList[i][1].name.name;
 
