@@ -1,3 +1,4 @@
+// A form for inputting the names of the actor or character and the show or movie they were in
 export default function Form({topPlaceHolder, nameValue, setName, title, setTitle, setCharError, setLoading, setSearchState, instruction, formtitle1, formtitle2, buttonContent}){
     const handleSubmit = (event) => {
         try {

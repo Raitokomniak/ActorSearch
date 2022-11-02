@@ -1,5 +1,5 @@
+// Displays result with actor/character name, their picture (if found) and IMDB link
 export default function Result({actorImgURL, resultName, IMDB, resultFor, reset, title, backToSearch}){
-
     if(actorImgURL === ''){
         return(
             <div>

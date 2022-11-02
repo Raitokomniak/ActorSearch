@@ -16,7 +16,6 @@ export default function SearchEngine({searchType}){
     const [charName, setCharName] = useState('');
     const [charNameF, setCharNameF] = useState('');
     const [actorName, setActorName] = useState('');
-    const [actorID, setActorID] = useState('');
     const [reqComplete, setReqComplete] = useState(false);
     const [charError, setCharError] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -50,21 +49,23 @@ export default function SearchEngine({searchType}){
         catch (TypeError){}
     }
 
-    //forcefully compares the strings first, if not found, then check if contained in the other string
+    // Forcefully compares the strings first, 
     function compareNames(tempName, comparedTo){
         if(tempName.toLowerCase() === comparedTo.toLowerCase()) return true;
         return false;
     }
 
+    // If forcecompare doesnt work, then check if contained in the other string
+    // (done after the first iteration so it doesn't jump the gun)
     function compareNameInclusion(tempName, comparedTo){
        if (tempName.toLowerCase().includes(comparedTo.toLowerCase())) return true;
        return false;
     }
 
-    function completeReq(tempActorName, tempCharName, i){
+    // Complete the request by filling in rest of the info from charList
+    function completeReq(tempActorName, i){
         setActorIMDB('https://www.imdb.com/' + charList[i][1].name.id);
         setActorName(tempActorName);
-        setActorID(charList[i][0]);
         setCharIMDB('https://www.imdb.com/title/' + titleID + '/characters/' + charList[i][0] + '');
         setCharName(charList[i][1].charname[0].characters[0]);
 
@@ -75,6 +76,7 @@ export default function SearchEngine({searchType}){
         setSearchState(0);
     }
 
+    // Auto-complete GET the inputted title
     function titleSearch(){
         options.url = 'https://online-movie-database.p.rapidapi.com/auto-complete';
         options.params = {q: title};
@@ -83,13 +85,12 @@ export default function SearchEngine({searchType}){
             setTitle(response.data.d[0].l);
             setTitleID(response.data.d[0].id);
             setSearchState(2);
-            
-
          }).catch(function (error) {
              console.error(error);
          })
     }
 
+    // GET top billed for title
     function topBilledSearch(){
         options.url = 'https://online-movie-database.p.rapidapi.com/title/get-top-cast';
             options.params = {tconst: titleID};
@@ -114,6 +115,7 @@ export default function SearchEngine({searchType}){
             })
     }
 
+    // GET characters for title
     function characterSearch(){
         options.url = 'https://online-movie-database.p.rapidapi.com/title/get-charname-list';
         options.params = {tconst: titleID, id: paramString}
@@ -122,6 +124,7 @@ export default function SearchEngine({searchType}){
             console.log("Looking for characters...");
             charList =  Object.entries(response.data)
             
+            // Iterate to find full match between actor names or character names
             for(var i = 0; i < charList.length; i++){
                 setCharNameF(charList[i][1].charname[0].characters[0]);
                 var tempCharName = charList[i][1].charname[0].characters[0];
@@ -129,16 +132,17 @@ export default function SearchEngine({searchType}){
 
                 if(searchType === "actor"){
                     if(compareNames(charName, tempCharName)) { 
-                    completeReq(tempActorName, tempCharName, i);
+                    completeReq(tempActorName, i);
                     break;
                 }}
                 if(searchType === "character"){}
                 if(compareNames(actorName, tempActorName)) { 
-                    completeReq(tempActorName, tempCharName, i);
+                    completeReq(tempActorName, i);
                     break;
                 }
             }
-            
+
+            // Iterate again for partial matches if there was no full match
             if(!reqComplete) {
                 for(var i = 0; i < charList.length; i++){
                     setCharNameF(charList[i][1].charname[0].characters[0]);
@@ -147,16 +151,14 @@ export default function SearchEngine({searchType}){
 
                     if(searchType === "actor"){
                         if(compareNameInclusion(charName, tempCharName)){
-                        completeReq(tempActorName, tempCharName, i);
+                        completeReq(tempActorName, i);
                         break;
                     }}
                     if(searchType === "character"){if(
                         compareNameInclusion(actorName, tempActorName)){
-                        completeReq(tempActorName, tempCharName, i);
+                        completeReq(tempActorName, i);
                         break;
                     }}
-
-                    
                 }
             }
             if(!reqComplete) {
@@ -168,6 +170,9 @@ export default function SearchEngine({searchType}){
             console.error(error);
         }).finally(() => setLoading(false));
     }
+
+    //Return views by state
+
     if(reqComplete){
         if(searchType === "actor")      return <Result actorImgURL={actorImgURL} resultName={actorName} IMDB={actorIMDB} resultFor={charNameF} reset={reset} title={title} backToSearch={backToSearch}/>
         if(searchType === "character")  return <Result actorImgURL={actorImgURL} resultName={charName} IMDB={charIMDB} resultFor={actorName} reset={reset} title={title} backToSearch={backToSearch}/>
